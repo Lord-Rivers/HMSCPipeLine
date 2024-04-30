@@ -4,10 +4,10 @@ require(ggplot2)
 require(cli)
 set.seed(369)
 ### Set up directories #### Because I run this on two difference computers this
-setwd(file.path(dirname(rstudioapi::getSourceEditorContext()$path),"../"))
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 model_description = "Example_x1_TRphy_Site"
-localDir = sprintf("./HMSC/Hmsc Outputs/%s",model_description)
+localDir = sprintf("./Hmsc Outputs/%s",model_description)
 ModelDir = file.path(localDir, "Models")
 UnfittedDir = file.path(ModelDir, "Unfitted")
 ResultDir = file.path(localDir, "Results")
@@ -41,7 +41,11 @@ load(file = file.path(UnfittedDir,"unfitted_models.RData"))
 for (Lst in nst:1) {
   thin = thin_list[Lst]
   samples = samples_list[Lst]
-  filename = file.path(ModelDir,sprintf("Fitted/HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
+  #Note that I use different file names for the R fitted and HPC fitted models
+  #just to keep track
+  
+  #filename = file.path(ModelDir,sprintf("Fitted/HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
+  filename = file.path(ModelDir,sprintf("Fitted/FittedR_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
   if(file.exists(filename)){
     cli_alert_success("File {filename} exists")
     #cat("Check good\nFile: ", filename, "exists.\n")
@@ -54,8 +58,10 @@ for (Lst in nst:1) {
 
 if(file.exists(filename)){
   load(filename)
-  m = fitted_model$posteriors
-  rm(fitted_model)
+  #If you are using R fitted models you don't need to run the following two lines as the model is saved differently.
+  #m = fitted_model$posteriors
+  #rm(fitted_model)
+  
   modelnames = model_description
   if(is.null(species.list)){
     species.list = list()
@@ -83,7 +89,10 @@ if(file.exists(filename)){
   
   #Change this to save the gradients, check if the file exists and if it does skip calculating them and move straight to plotting
   if(length(covariates)>0){
-    outfile = file.path(ResultDir,sprintf("Preds/Preds_%s_HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata",model_description, m$samples, m$thin, nChains))
+    #Note that I use different file names for the R fitted and HPC fitted models
+    #just to keep track
+    #outfile = file.path(ResultDir,sprintf("Preds/Preds_%s_HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata",model_description, m$samples, m$thin, nChains))
+    outfile = file.path(ResultDir,sprintf("Preds/Preds_%s_R_samples_%.4d_thin_%.2d_chains_%.1d.Rdata",model_description, m$samples, m$thin, nChains))
     cli_h1("Making predictions")
     if(file.exists(file.path(outfile))){
       cli_alert_success("Predictions already calculated")
@@ -136,14 +145,14 @@ if(file.exists(filename)){
       if(inherits(pl, "ggplot")){
         print(pl + labs(title=paste0(modelnames,": summed response (marginal effect)")))
       }
-      for(l in 1:length(ex.sp)){
+      for(l in 1:length(species.list)){
         par(mfrow=c(2,1))
-        pl = plotGradient(m, Preds[[k]]$Gradient, pred=Preds[[k]]$predY, yshow = if(m$distr[1,1]==2){c(-0.1,1.1)}else{0}, measure="Y",index=ex.sp[l], showData = TRUE, 
+        pl = plotGradient(m, Preds[[k]]$Gradient, pred=Preds[[k]]$predY, yshow = if(m$distr[1,1]==2){c(-0.1,1.1)}else{0}, measure="Y",index=species.list[l], showData = TRUE, 
                           main = paste0(modelnames,": example species (total effect)"))
         if(inherits(pl, "ggplot")){
           print(pl + labs(title=paste0(modelnames,": example species (total effect)")))
         }
-        pl = plotGradient(m, Preds[[k]]$Gradient2, pred=Preds[[k]]$predY2, yshow = if(m$distr[1,1]==2){c(-0.1,1.1)}else{0}, measure="Y",index=ex.sp[l], showData = TRUE, 
+        pl = plotGradient(m, Preds[[k]]$Gradient2, pred=Preds[[k]]$predY2, yshow = if(m$distr[1,1]==2){c(-0.1,1.1)}else{0}, measure="Y",index=species.list[l], showData = TRUE, 
                           main = paste0(modelnames,": example species (marginal effect)"))
         if(inherits(pl, "ggplot")){
           print(pl + labs(title=paste0(modelnames,": example species (marginal effect)")))
