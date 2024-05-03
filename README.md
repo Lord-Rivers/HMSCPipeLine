@@ -47,4 +47,7 @@ Fuzzy matching works for job submition, personally I recomned Fit_*el.sh and Fit
 The HPC scripts assume that your data on the HPC storage is in the same folder structure as described above, however, the unfitted folder is not required and the RAW_HPC folder is named sampled.
 Sampled HPC files are merged on your local machine by S2b_HPC_output_merger, there is no need to retain the unmerged outputs locally.
 
+Batch scripts should be stored in the folder that contains are the subfolders for each Area, the way they point to files expects this. There might still be some residual file locating errors in your local setup, please double check all pointers.
+##R Scripts
+S4a_Partition_Creation and S4b_HPC_Post_Processing are required to be stored on the HPC in the same file location as the batch scripts.
 
