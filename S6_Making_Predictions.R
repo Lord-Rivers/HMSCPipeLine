@@ -48,7 +48,6 @@ for (Lst in nst:1) {
   filename = file.path(ModelDir,sprintf("Fitted/FittedR_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
   if(file.exists(filename)){
     cli_alert_success("File {filename} exists")
-    #cat("Check good\nFile: ", filename, "exists.\n")
     break} else{
       cli_alert_danger("File {filename} exists")
       cli_alert_info(cli_par("Run computing model fit script for:\n Thin: {thin} \t Samples: {samples} \t Chains: {nChains}"))
