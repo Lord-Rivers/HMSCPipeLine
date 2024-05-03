@@ -27,3 +27,24 @@ There are multiple ways to structure how the outputs are saved. For the HPC appr
       - Preds
 
 For R based fitting fewer output files are required and if you wish to set up multiple models as listed in the University of Helsinkis HMSC Course pipeline a completelly different file structure can be used.
+
+# HPC
+##General format
+The Fit_HMSC_Model and Fit_HMSC_Model_KFold are set up so that they can be submitted using SLRUM as follows:
+
+sbatch --export=ALL,SAMP=<samples>,THIN=<thin>,AREA=<Area>,NAME=<Model_name> Fit_HMSC_Model.sh
+
+*Samples: The number of samples
+*Thin: Model thinning
+*Area: If you are formatting you files so that there is a folder for each area that contains the Hmsc outputs folder use this. Else feel free to remove it from you local version of the batch script
+*Model name: The name of the model. This is the name of the colder which countains the models Models and Results subfolders.
+
+NOTE: Samples and thin are only used for file matching, you must have ran and uploaded the output of S2_Model_Fitting_HPC_Version to the HPC storeage for it to run correctly 
+
+Fuzzy matching works for job submition, personally I recomned Fit_*el.sh and Fit_*old.sh rather then typing out the full names
+
+## File notes
+The HPC scripts assume that your data on the HPC storage is in the same folder structure as described above, however, the unfitted folder is not required and the RAW_HPC folder is named sampled.
+Sampled HPC files are merged on your local machine by S2b_HPC_output_merger, there is no need to retain the unmerged outputs locally.
+
+
