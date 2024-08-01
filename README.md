@@ -29,15 +29,15 @@ There are multiple ways to structure how the outputs are saved. For the HPC appr
 For R based fitting fewer output files are required and if you wish to set up multiple models as listed in the University of Helsinkis HMSC Course pipeline a completelly different file structure can be used.
 
 # HPC
-##General format
+## General format
 The Fit_HMSC_Model and Fit_HMSC_Model_KFold are set up so that they can be submitted using SLRUM as follows:
 
 sbatch --export=ALL,SAMP=<samples>,THIN=<thin>,AREA=<Area>,NAME=<Model_name> Fit_HMSC_Model.sh
 
-*Samples: The number of samples
-*Thin: Model thinning
-*Area: If you are formatting you files so that there is a folder for each area that contains the Hmsc outputs folder use this. Else feel free to remove it from you local version of the batch script
-*Model name: The name of the model. This is the name of the colder which countains the models Models and Results subfolders.
+- Samples: The number of samples
+- Thin: Model thinning
+- Area: If you are formatting you files so that there is a folder for each area that contains the Hmsc outputs folder use this. Else feel free to remove it from you local version of the batch script
+- Model name: The name of the model. This is the name of the colder which countains the models Models and Results subfolders.
 
 NOTE: Samples and thin are only used for file matching, you must have ran and uploaded the output of S2_Model_Fitting_HPC_Version to the HPC storeage for it to run correctly 
 
@@ -48,6 +48,6 @@ The HPC scripts assume that your data on the HPC storage is in the same folder s
 Sampled HPC files are merged on your local machine by S2b_HPC_output_merger, there is no need to retain the unmerged outputs locally.
 
 Batch scripts should be stored in the folder that contains are the subfolders for each Area, the way they point to files expects this. There might still be some residual file locating errors in your local setup, please double check all pointers.
-##R Scripts
+## R Scripts
 S4a_Partition_Creation and S4b_HPC_Post_Processing are required to be stored on the HPC in the same file location as the batch scripts.
 
