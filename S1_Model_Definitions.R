@@ -3,6 +3,7 @@
 remove(list=ls())
 gc()
 
+require(Hmsc)
 ### Set up directories #### 
 
 #If you are using RStudio this will set the working directory to exactly where the file is 
@@ -28,16 +29,16 @@ rl.coord = HmscRandomLevel(sData = xycoord)
 rm(Pi)
 
 model = Hmsc(Y = Y, XData = X, XFormula = ~ x1, 
-             TrData = Tr, phyloTree =  phy, TrFormula = ~Tr1, 
+             TrData = Tr, phyloTree =  phy, TrFormula = ~ Tr1, 
              studyDesign = studyDesign ,ranLevels = list(Site = rl.coord),
              distr = "normal")
 
-model_description = "Example_x1_TRphy_Site"
+model_description = "Example1_R_x1_TRphy_Site"
 
 #These lists are left over from the orginal pipeline which had multiple models
 #defined at the same time
 models = list(model)
-names(models) = c("AB x1 Traits Tree Site")
+names(models) = c("AB wkshp2 Traits Tree Site")
 
 #Check if the model with this description has been created before, if not create
 #both the model and results directories and all sub folders

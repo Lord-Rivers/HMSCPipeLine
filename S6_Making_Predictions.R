@@ -6,14 +6,14 @@ set.seed(369)
 ### Set up directories #### Because I run this on two difference computers this
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
-model_description = "Example_x1_TRphy_Site"
+model_description = "Example1_hpc_x1_TRphy_Site"
 localDir = sprintf("./Hmsc Outputs/%s",model_description)
 ModelDir = file.path(localDir, "Models")
 UnfittedDir = file.path(ModelDir, "Unfitted")
 ResultDir = file.path(localDir, "Results")
 
-samples_list = c(50, 100, 250, 250, 500, 500, 500, 500, 500, 500)
-thin_list = c(10, 10, 10, 20, 20, 30, 40, 50, 60, 75)
+samples_list = c(100, 250, 500, 750)
+thin_list = c(10, 20, 20, 50)
 nst = length(thin_list)
 nChains = 4
 
@@ -44,8 +44,8 @@ for (Lst in nst:1) {
   #Note that I use different file names for the R fitted and HPC fitted models
   #just to keep track
   
-  #filename = file.path(ModelDir,sprintf("Fitted/HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
-  filename = file.path(ModelDir,sprintf("Fitted/FittedR_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
+  filename = file.path(ModelDir,sprintf("Fitted/HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
+  #filename = file.path(ModelDir,sprintf("Fitted/FittedR_samples_%.4d_thin_%.2d_chains_%.1d.Rdata", samples, thin, nChains))
   if(file.exists(filename)){
     cli_alert_success("File {filename} exists")
     break} else{
@@ -58,8 +58,8 @@ for (Lst in nst:1) {
 if(file.exists(filename)){
   load(filename)
   #If you are using R fitted models you don't need to run the following two lines as the model is saved differently.
-  #m = fitted_model$posteriors
-  #rm(fitted_model)
+  m = fitted_model$posteriors
+  rm(fitted_model)
   
   modelnames = model_description
   if(is.null(species.list)){
@@ -90,8 +90,8 @@ if(file.exists(filename)){
   if(length(covariates)>0){
     #Note that I use different file names for the R fitted and HPC fitted models
     #just to keep track
-    #outfile = file.path(ResultDir,sprintf("Preds/Preds_%s_HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata",model_description, m$samples, m$thin, nChains))
-    outfile = file.path(ResultDir,sprintf("Preds/Preds_%s_R_samples_%.4d_thin_%.2d_chains_%.1d.Rdata",model_description, m$samples, m$thin, nChains))
+    outfile = file.path(ResultDir,sprintf("Preds/Preds_%s_HPC_samples_%.4d_thin_%.2d_chains_%.1d.Rdata",model_description, m$samples, m$thin, nChains))
+    #outfile = file.path(ResultDir,sprintf("Preds/Preds_%s_R_samples_%.4d_thin_%.2d_chains_%.1d.Rdata",model_description, m$samples, m$thin, nChains))
     cli_h1("Making predictions")
     if(file.exists(file.path(outfile))){
       cli_alert_success("Predictions already calculated")

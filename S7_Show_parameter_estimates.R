@@ -3,13 +3,14 @@ require(Hmsc)
 require(colorspace)
 require(corrplot)
 require(writexl)
+require(cli)
 
 set.seed(369)
 
 ### Set up directories #### Because I run this on two difference computers this
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
-model_description = "Example_x1_TRphy_Site"
+model_description = "Example1_R_x1_TRphy_Site"
 localDir = sprintf("./Hmsc Outputs/%s",model_description)
 ModelDir = file.path(localDir, "Models")
 UnfittedDir = file.path(ModelDir, "Unfitted")
@@ -25,8 +26,8 @@ plotTree = NULL #Default: tree is plotted in Beta plot if the model includes it
 omega.order = NULL #Default: species shown in the order they are in the model
 show.sp.names.omega = NULL #Default: species names shown in beta plot if there are at most 30 species
 
-samples_list = c(50, 100, 250, 250, 500, 500, 500, 500, 500, 500)
-thin_list = c(10, 10, 10, 20, 20, 30, 40, 50, 60, 75)
+samples_list = c(100, 250, 500, 750)
+thin_list = c(10, 20, 20, 50)
 nst = length(thin_list)
 nChains = 4
 
@@ -192,6 +193,8 @@ if(file.exists(filename)){
               trNamesNumbers=c(m$nt<21,FALSE),
               cex=c(0.6,0.6,0.8))
     title(main=paste0("GammaPlot ",model_description), line=2.5,cex.main=0.8)
+    filename = file.path(ResultDir, paste0(model_description,"parameter_estimates_Gamma_.xlsx"))
+    writexl::write_xlsx(as.data.frame(t(postGamma$mean)),path = filename)
   }
   
   #Compute Species Associations for the models

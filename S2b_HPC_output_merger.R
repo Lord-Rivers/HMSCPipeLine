@@ -4,18 +4,18 @@ require(Hmsc)
 require(cli)
 
 ### Set up directories ####
-models_description = "Example_x1_TRphy_Site"
+models_description = "Example1_hpc_x1_TRphy_Site"
 #New version of the ifstatement, this only works if rstudioapi is present and
 #assumes that this script file is one level down down from the main working
 #file. This is the case in these implemtations
-setwd(file.path(dirname(rstudioapi::getSourceEditorContext()$path),"../"))
+setwd(file.path(dirname(rstudioapi::getSourceEditorContext()$path)))
 getwd()
-localDir = "./HMSC/Hmsc Outputs"
+localDir = "./Hmsc Outputs"
 ModelDir = file.path(localDir, sprintf("%s/Models",models_description))
 
 ### Model name and samples and thining lists ####
-samples_list = c(50, 100, 250, 250, 500, 500, 500, 500, 500, 500)
-thin_list = c(10, 10, 10, 20, 20, 30, 40, 50, 60, 75)
+samples_list = c(100, 250, 500, 750)
+thin_list = c(10, 20, 20, 50)
 verbose = 10 #This is for alpha fix outputs
 #Loading in the unfitted model
 load(file = file.path(ModelDir, "unfitted/unfitted_models.RData"))

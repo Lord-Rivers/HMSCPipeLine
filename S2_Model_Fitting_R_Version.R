@@ -6,7 +6,7 @@ require(Hmsc)
 
 #If you are using RStudio this will set the working directory to exactly where the file is 
 setwd(file.path(dirname(rstudioapi::getSourceEditorContext()$path)))
-model_description = "Example_x1_TRphy_Site"
+model_description = "Example1_R_x1_TRphy_Site"
 localDir = sprintf("./Hmsc Outputs/%s",model_description)
 ModelDir = file.path(localDir, "Models")
 
@@ -14,8 +14,8 @@ ModelDir = file.path(localDir, "Models")
 load(file = file.path(ModelDir, "Unfitted/unfitted_models.RData"))
 
 #Now we can start fitting the model here, we set up the number of model runs
-samples_list = c(50, 100, 250, 250, 500, 500, 500, 750)
-thin_list = c(10, 10, 10, 20, 20, 50, 60, 50)
+samples_list = c(100, 250, 500)
+thin_list = c(10, 20, 20)
 nChains = 4
 nParallel = 4
 Lst = 1
